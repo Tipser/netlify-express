@@ -16,6 +16,8 @@ router.get('/', (req, res) => {
 router.get('/another', (req, res) => res.json({ route: req.originalUrl }));
 router.post('/', (req, res) => res.json({ postBody: req.body }));
 
+router.post('/webhook-test-product-in-collection-changed', (req, res) => res.send("OK"));
+
 app.use(bodyParser.json());
 morganBody(app, { logAllReqHeader: true });
 app.use('/.netlify/functions/server', router);  // path must route to lambda
