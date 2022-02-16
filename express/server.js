@@ -1,5 +1,7 @@
 'use strict';
 const express = require('express');
+const morgan = require('morgan');
+const morganBody = require('morgan-body');
 const path = require('path');
 const serverless = require('serverless-http');
 const app = express();
@@ -15,6 +17,7 @@ router.get('/another', (req, res) => res.json({ route: req.originalUrl }));
 router.post('/', (req, res) => res.json({ postBody: req.body }));
 
 app.use(bodyParser.json());
+morganBody(app, { logAllReqHeader: true });
 app.use('/.netlify/functions/server', router);  // path must route to lambda
 app.use('/', (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
 
