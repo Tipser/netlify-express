@@ -17,7 +17,7 @@ router.get('/another', (req, res) => res.json({ route: req.originalUrl }));
 router.post('/', (req, res) => res.json({ postBody: req.body }));
 
 router.post('/webhook-test-product-in-collection-changed', (req, res) => {
-  console.log("Request body from webhook:", req.body)
+  // console.log("Request body from webhook:", req.body)
   res.send("OK");
 });
 
@@ -32,7 +32,7 @@ function overrideContentTypeForAwsSns(req, res, next) {
 
 app.use(overrideContentTypeForAwsSns);
 app.use(bodyParser.json());
-morganBody(app, { logAllReqHeader: true });
+morganBody(app, { logAllReqHeader: true, maxBodyLength: 20000 });
 app.use('/.netlify/functions/server', router);  // path must route to lambda
 app.use('/', (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
 
