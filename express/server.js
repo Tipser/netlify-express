@@ -16,8 +16,20 @@ router.get('/', (req, res) => {
 router.get('/another', (req, res) => res.json({ route: req.originalUrl }));
 router.post('/', (req, res) => res.json({ postBody: req.body }));
 
-router.post('/webhook-test-product-in-collection-changed', (req, res) => res.send("OK"));
+router.post('/webhook-test-product-in-collection-changed', (req, res) => {
+  res.send("OK");
+});
 
+
+function overrideContentTypeForAwsSns(req, res, next) {
+  if (req.headers['x-amz-sns-message-type']) {
+    req.headers['content-type'] = 'application/json;charset=UTF-8';
+  }
+  next();
+};
+
+
+app.use(overrideContentTypeForAwsSns);
 app.use(bodyParser.json());
 morganBody(app, { logAllReqHeader: true });
 app.use('/.netlify/functions/server', router);  // path must route to lambda
