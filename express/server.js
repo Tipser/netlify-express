@@ -17,6 +17,7 @@ router.get('/another', (req, res) => res.json({ route: req.originalUrl }));
 router.post('/', (req, res) => res.json({ postBody: req.body }));
 
 router.post('/webhook-test-product-in-collection-changed', (req, res) => {
+  console.log("Request body from webhook:", req.body)
   res.send("OK");
 });
 
